@@ -58,7 +58,6 @@ class DNSPod(object):
         try:
             sock = socket.create_connection(address = ('ns1.dnspod.net', 6666), timeout = 10)
             ip = sock.recv(32)
-            logger().info("GetIP: %s", ip)
             sock.close()
             return ip
         except Exception,e:
