@@ -53,8 +53,6 @@ class DNSPod(object):
             if self.DDns("h", ip):
                 self.ip = ip
                 LastIP().Write(self.ip)
-        else:
-            logger().info("IP invalid or not changed")
 
     def GetIP(self):
         try:
