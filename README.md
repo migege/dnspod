@@ -24,6 +24,7 @@ git clone https://github.com/migege/dnspod.git
 token : &lt;your_api_token&gt;
 domain_id : &lt;your_domain_id&gt;
 record_id : &lt;your_record_id&gt;
+sub_domain: &lt;sub_domain&gt;
 </pre>
 
 最后设置 crontab 定时任务
