@@ -12,10 +12,8 @@ sys.setdefaultencoding("utf8")
 def logger():
     import logging
     LOG_FORMAT = "[%(asctime)s]\t[%(levelname)s]\t[%(message)s]"
-    LOG_FILE = os.path.join(
-        os.path.dirname(os.path.realpath(__file__)), "log.txt")
-    logging.basicConfig(
-        format=LOG_FORMAT, level=logging.DEBUG, filename=LOG_FILE)
+    LOG_FILE = os.path.join(os.path.dirname(os.path.realpath(__file__)), "log.txt")
+    logging.basicConfig(format=LOG_FORMAT, level=logging.DEBUG, filename=LOG_FILE)
     return logging.getLogger(__name__)
 
 
@@ -30,8 +28,7 @@ def getopts():
 class LastIP(object):
 
     def __init__(self):
-        self.fn = os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), "lastip")
+        self.fn = os.path.join(os.path.dirname(os.path.realpath(__file__)), "lastip")
 
     def Read(self):
         try:
@@ -64,8 +61,7 @@ class DNSPod(object):
 
     def GetIP(self):
         try:
-            sock = socket.create_connection(
-                address=('ns1.dnspod.net', 6666), timeout=10)
+            sock = socket.create_connection(address=('ns1.dnspod.net', 6666), timeout=10)
             ip = sock.recv(32)
             sock.close()
             return ip
@@ -104,13 +100,6 @@ class DNSPod(object):
 
 if __name__ == '__main__':
     opts = getopts()
-    conf = yaml.load(
-        open(
-            os.path.join(
-                os.path.dirname(os.path.realpath(__file__)), opts.config), "r"))
-    dnspod = DNSPod(
-        login_token=conf["token"],
-        domain_id=conf["domain_id"],
-        record_id=conf["record_id"],
-        sub_domain=conf["sub_domain"])
+    conf = yaml.load(open(os.path.join(os.path.dirname(os.path.realpath(__file__)), opts.config), "r"))
+    dnspod = DNSPod(login_token=conf["token"], domain_id=conf["domain_id"], record_id=conf["record_id"], sub_domain=conf["sub_domain"])
     dnspod.run()
