@@ -25,10 +25,10 @@ def getopts():
     return opts
 
 
-class LastIP(object):
+class Last(object):
 
-    def __init__(self):
-        self.fn = os.path.join(os.path.dirname(os.path.realpath(__file__)), "lastip")
+    def __init__(self, tag):
+        self.fn = os.path.join(os.path.dirname(os.path.realpath(__file__)), tag)
 
     def Read(self):
         try:
@@ -45,16 +45,27 @@ class LastIP(object):
 class DNSPod(object):
 
     def __init__(self, conf):
-        self.ip = LastIP().Read()
+        self.ip = Last('last.ip').Read()
+        self.conf_md5 = Last('conf.md5').Read()
         self.conf = conf
 
     def run(self):
         ip = self.GetIP()
+        conf_md5 = self.GetConfMD5()
         if ip and ip != self.ip:
             logger().info("IP changed from '%s' to '%s'", self.ip, ip)
             if self.DDns(ip):
                 self.ip = ip
-                LastIP().Write(self.ip)
+                Last('last.ip').Write(self.ip)
+                return
+        if conf_md5 and conf_md5 != self.conf_md5:
+            logger().info("MD5 of conf changed")
+            if self.DDns(ip):
+                self.ip = ip
+                self.conf_md5 = conf_md5
+                Last('last.ip').Write(self.ip)
+                Last('conf.md5').Write(self.conf_md5)
+                return
 
     def GetIP(self):
         try:
@@ -64,6 +75,16 @@ class DNSPod(object):
             return ip
         except Exception, e:
             logger().error("GetIP Error: %s", e)
+            return None
+
+    def GetConfMD5(self):
+        try:
+            import hashlib
+            import json
+            md5 = hashlib.md5(json.dumps(self.conf)).hexdigest()
+            return md5
+        except Exception, e:
+            logger().error('GetConfMD5 Error: %s', e)
             return None
 
     def __DDnsImpl(self, ip, todo_list):
