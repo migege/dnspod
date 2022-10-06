@@ -4,6 +4,7 @@
 @author migege
 @version 0.0.2
 ```
+**本脚本需要 python2 运行环境，不兼容 python3**
 
 dnspod.py 是基于 [DNSPod](http://www.dnspod.cn/docs/records.html#dns) 服务的动态 DNS 脚本，用于检测 IP 变化并更新至 DNSPod，支持多域名解析。支持 Linux 设备，包括树莓派（[Raspberry Pi](https://www.raspberrypi.org/)）。
 
